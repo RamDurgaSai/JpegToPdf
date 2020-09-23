@@ -1,0 +1,10 @@
+To use JpegToPdf directly in python 
+
+Install the following packages through PIP
+
+
+PySide2  - $ python -m pip install PySide2
+
+PyPdf2   - $ python -m pip install PyPdf2
+
+Pil       -$ python -m pip install Pillow
