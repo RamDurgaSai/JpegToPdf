@@ -1,5 +1,5 @@
 from PySide2.QtWidgets import QFileDialog,QWidget, QLabel,QPushButton,QApplication,QMainWindow,QHBoxLayout,QVBoxLayout
-import sys,os
+import sys,os,subprocess
 from PIL import  Image
 from PyPDF2 import PdfFileMerger, PdfFileReader
 
@@ -19,6 +19,9 @@ class JpegToPdf(QMainWindow):
         self.setMinimumWidth(250)
 
         self.qv_box=QVBoxLayout()
+
+        self.qh_box = QHBoxLayout()
+
         self.w = QWidget()
 
         self.w.setLayout(self.qv_box)
@@ -43,6 +46,19 @@ class JpegToPdf(QMainWindow):
 
         self.button_start = QPushButton("Start")
 
+        self.button_open_dir=QPushButton("Open Folder")
+
+        self.button_open_dir.setEnabled(False)
+
+        self.button_open_dir.clicked.connect(lambda:self.open(self.button_open_dir))
+
+        self.button_open_file = QPushButton("Open File")
+
+        self.button_open_file.setEnabled(False)
+
+        self.button_open_file.clicked.connect(lambda:self.open(self.button_open_file))
+
+
         #Labels.......
         self.button_1_label=QLabel()
 
@@ -59,7 +75,11 @@ class JpegToPdf(QMainWindow):
 
 
 
+
+
         self.qv_box.addWidget(self.button_1)
+
+
 
         self.qv_box.addWidget(self.button_1_label)
 
@@ -74,6 +94,12 @@ class JpegToPdf(QMainWindow):
         self.qv_box.addWidget(self.button_start)
 
         self.qv_box.addWidget(self.button_start_label)
+
+        self.qh_box.addWidget(self.button_open_dir)
+
+        self.qh_box.addWidget(self.button_open_file)
+
+        self.qv_box.addLayout(self.qh_box)
 
 
 
@@ -143,13 +169,24 @@ class JpegToPdf(QMainWindow):
                                                                         ))
         merger.write(self.pdf_path)
 
-        os.remove(self.pdf_1_path)
-        os.remove(self.pdf_2_path)
-        os.remove(self.pdf_3_path)
+        try:
+            os.remove(self.pdf_1_path)
+            os.remove(self.pdf_2_path)
+            os.remove(self.pdf_3_path)
+        except:
+            pass
         print(self.pdf_path)
 
+        self.button_open_dir.setEnabled(True)
+        self.button_open_file.setEnabled(True)
 
 
+
+    def open(self,button):
+
+        if button.text()=="Open Folder":
+            self.pdf_folder_path=os.path.basename(self.pdf_path)
+            subprocess.Popen('explorer self.pdf_folder_path')
 
 
 
